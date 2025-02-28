@@ -1,0 +1,13 @@
+# Ignore .env file
+.env
+
+# Ignore node_modules
+node_modules/
+
+# Ignore vendor directory (for Laravel)
+vendor/
+
+# Ignore other sensitive files
+*.log
+*.key
+*.pem
