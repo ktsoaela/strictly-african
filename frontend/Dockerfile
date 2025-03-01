@@ -1,6 +1,6 @@
 # Frontend(Next JS)
 # Use the official Node.js image from the Docker Hub
-FROM node:18
+FROM node:22
 
 # Set the working directory
 WORKDIR /usr/src/app
