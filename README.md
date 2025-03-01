@@ -51,6 +51,11 @@ strictly-african/
 │   └── Dockerfile
 ```
 
+## 📚 FAQ
+Having issues with starting the project<br/>
+take a look at our  [Frequently Asked Questions](FAQ.md)
+
+
 ## 📢 Get Involved
 Strictly African is open for contributions! Feel free to submit issues, feature requests, or even contribute directly to the codebase.
 
