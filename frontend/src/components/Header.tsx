@@ -1,12 +1,13 @@
 import React from "react";
 import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+
 import Link from 'next/link'
 
 const Header: React.FC = () => {
   return (
     <header className="bg-gray-800 text-white p-4">
       <div className="flex justify-between items-center max-w-screen-xl mx-auto">
-        <div className="text-xl font-bold">Strictly African</div>
+        <div className="text-xl font-bold"><Link href="/">Strictly African</Link></div>
         <nav className="flex gap-8">
           <Link href="/" className="hover:text-grey-400">Home</Link>
           <Link href="/news" className="hover:text-grey-400">News</Link>
