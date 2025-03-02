@@ -200,3 +200,135 @@ tail -f /var/log/apache2/access.log
 
 -----
 
+
+
+
+The error you're encountering is due to port `5432` (which is typically used by PostgreSQL) already being in use on your system. This is preventing Docker from binding the port for your container (`strictly-african-db-1`).
+
+### Solutions:
+
+1. **Check if PostgreSQL is running on your machine:**
+   First, verify if you have a local PostgreSQL instance running that’s using port `5432`. You can do this by running the following command:
+
+   ```bash
+   sudo lsof -i :5432
+   ```
+
+   If you see that the port is in use, you can either stop the local PostgreSQL service or change the port in your Docker configuration.
+
+2. **Stop the local PostgreSQL service:**
+   If PostgreSQL is running locally, you can stop it (if it's not essential) using:
+
+   ```bash
+   sudo service postgresql stop
+   ```
+
+   Alternatively, if you're using `systemctl` to manage PostgreSQL, use:
+
+   ```bash
+   sudo systemctl stop postgresql
+   ```
+
+3. **Change the port for the database container:**
+   If you need to keep your local PostgreSQL running and can’t stop it, you can modify the port binding in your `docker-compose.yml` (if you're using Docker Compose) or your Docker run command.
+
+   If using **Docker Compose**, you can modify the port mapping for the database service:
+
+   ```yaml
+   services:
+     db:
+       image: postgres
+       ports:
+         - "5433:5432"  # Change 5432 to another port like 5433
+   ```
+
+   This will bind PostgreSQL to port `5433` inside the container and port `5433` on your host machine instead of port `5432`.
+
+4. **Restart your Docker containers:**
+   Once the port issue is resolved (either by freeing up port `5432` or by changing the port mapping), you can restart your containers:
+
+   ```bash
+   docker-compose down
+   docker-compose up
+   ```
+
+5. **If you’re not using Docker Compose**, and running the container manually, update the `-p` argument to reflect a different port:
+
+   ```bash
+   docker run -p 5433:5432 your-image-name
+   ```
+
+This should resolve the port conflict issue you're seeing.
+
+
+The error you're encountering indicates that **Next.js** can't resolve the package `tailwindcss-animate` in your project during the build process.
+
+Here’s how you can resolve the error:
+
+### 1. **Install `tailwindcss-animate` Dependency**
+It looks like you might not have installed the `tailwindcss-animate` package, or the installation didn't succeed. Try installing it manually by running:
+
+```bash
+npm install tailwindcss-animate
+```
+
+### 2. **Check for Correct Import**
+Make sure you're importing `tailwindcss-animate` correctly in your CSS file (typically in `globals.css` or wherever you're using it). For example, ensure you have the correct configuration in your `globals.css`:
+
+```css
+@import "tailwindcss-animate";
+```
+
+### 3. **Check Tailwind CSS Configuration**
+Make sure your `tailwind.config.js` is properly set up to support the plugin. You need to add the `tailwindcss-animate` plugin in the `plugins` section. For example:
+
+```js
+// tailwind.config.js
+module.exports = {
+  content: [
+    './src/**/*.{js,ts,jsx,tsx}',
+    './pages/**/*.{js,ts,jsx,tsx}',
+  ],
+  plugins: [
+    require('tailwindcss-animate'),
+  ],
+}
+```
+
+This configuration ensures that `tailwindcss-animate` is used as part of your Tailwind CSS build.
+
+### 4. **Clear npm Cache and Rebuild**
+Sometimes, clearing the npm cache and rebuilding can resolve issues caused by incomplete or corrupted installs.
+
+Clear the npm cache with:
+
+```bash
+npm cache clean --force
+```
+
+Then delete `node_modules` and `package-lock.json` (or `yarn.lock` if using Yarn):
+
+```bash
+rm -rf node_modules
+rm package-lock.json
+```
+
+After that, reinstall the dependencies:
+
+```bash
+npm install
+```
+
+Finally, run the build again:
+
+```bash
+npm run build
+```
+
+### 5. **Double-Check File Path**
+If the error persists, ensure that the file path in the error message (`/usr/src/app/src/app`) is correct, and there are no issues with how the project is structured in your container. If you have recently moved files around or made changes to the folder structure, update any relevant paths.
+
+### Conclusion
+To fix this error, ensure that the `tailwindcss-animate` package is installed, properly configured in the `tailwind.config.js`, and that the `globals.css` file correctly imports the plugin.
+
+Let me know if the issue persists or if you need further assistance!

@@ -1,9 +1,5 @@
-version: '3.8'
-
 services:
   nextjs:
-    environment:
-      - NODE_ENV=production
     build:
       context: ./frontend
       dockerfile: Dockerfile
@@ -48,6 +44,11 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}"]
+      interval: 10s
+      retries: 5
+
 
 volumes:
   db_data:

@@ -1,0 +1,100 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: secret  # This could also be moved to a repository secret
+          POSTGRES_DB: strictlyafrican
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and Run Docker Containers
+        run: |
+          docker-compose -f docker-compose.yml up -d --build
+
+      - name: Set up Environment Variables for Laravel and Next.js
+        run: |
+          echo "DB_CONNECTION=pgsql" >> .env
+          echo "DB_HOST=localhost" >> .env
+          echo "DB_PORT=5432" >> .env
+          echo "DB_DATABASE=strictlyafrican" >> .env
+          echo "DB_USERNAME=postgres" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}" >> .env
+          echo "NEXT_PUBLIC_SUPABASE_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_KEY }}" >> .env
+          echo "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}" >> .env
+          echo "CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }}" >> .env
+
+      - name: Install Composer Dependencies (Laravel)
+        run: |
+          docker-compose exec -T app bash -c "composer install --no-dev --optimize-autoloader"
+
+      - name: Run Laravel Tests
+        run: |
+          docker-compose exec -T app bash -c "php artisan migrate --force && php artisan test"
+
+      - name: Install NPM Dependencies (Next.js)
+        run: |
+          docker-compose exec -T frontend bash -c "npm install"
+
+      - name: Run Next.js Tests
+        run: |
+          docker-compose exec -T frontend bash -c "npm run test"
+
+      - name: Clean Up Docker Containers
+        run: |
+          docker-compose down --volumes
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    if: success()
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Build and Deploy Docker Containers
+        run: |
+          docker-compose -f docker-compose.yml up -d --build
+          
+      - name: Deploy to Production (if applicable)
+        run: |
+          # Example: Deploy your app to production server
+          # ssh deploy@your-server "docker-compose pull && docker-compose up -d"
+          echo "Deploying to production..."
+
+  # Optionally: Notifications (e.g. Slack, Email) after deployment or failure
+  notify:
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: failure()
+    steps:
+      - name: Send Failure Notification
+        run: |
+          echo "Sending failure notification..." # Use a real notification service like Slack API here

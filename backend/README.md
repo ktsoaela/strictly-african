@@ -81,3 +81,7 @@ docker-compose exec laravel php artisan package:discover --ansi
 
 
 php artisan serve
+
+
+➜ cd backend
+➜ composer run dev

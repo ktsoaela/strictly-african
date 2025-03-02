@@ -18,15 +18,15 @@ RUN apt-get update && apt-get install -y \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copy the composer.json and composer.lock files to the container
-COPY composer.* ./
+# COPY composer.* ./
 
 # Install PHP dependencies using Composer
-RUN composer install --no-dev --optimize-autoloader
+# RUN composer install --no-dev --optimize-autoloader
 
 # Copy the rest of the Laravel application code into the container
 COPY . .
 
-# Copy the custom Apache configuration file into the container (adjust based on your needs)
+# Copy the custom Apache configuration file into the container
 COPY docker-000-default.conf /etc/apache2/sites-available/000-default.conf
 
 # Enable mod_rewrite and other necessary Apache modules
