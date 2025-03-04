@@ -15,13 +15,13 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: secret  # This could also be moved to a repository secret
-          POSTGRES_DB: strictlyafrican
+          POSTGRES_USER: ${{ secrets.DB_USERNAME }}
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.DB_DATABASE }}
         ports:
           - 5432:5432
         options: >-
-          --health-cmd="pg_isready -U postgres"
+          --health-cmd="pg_isready -U ${{ secrets.DB_USERNAME }}"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
@@ -40,21 +40,22 @@ jobs:
       - name: Set up Environment Variables for Laravel and Next.js
         run: |
           echo "DB_CONNECTION=pgsql" >> .env
-          echo "DB_HOST=localhost" >> .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
           echo "DB_PORT=5432" >> .env
-          echo "DB_DATABASE=strictlyafrican" >> .env
-          echo "DB_USERNAME=postgres" >> .env
+          echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
           echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
           echo "NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}" >> .env
           echo "NEXT_PUBLIC_SUPABASE_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_KEY }}" >> .env
           echo "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}" >> .env
           echo "CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }}" >> .env
+          echo "EMAIL=${{ secrets.EMAIL }}" >> .env
 
       - name: Install Composer Dependencies (Laravel)
         run: |
           docker-compose exec -T app bash -c "composer install --no-dev --optimize-autoloader"
 
-      - name: Run Laravel Tests
+      - name: Run Laravel Migrations and Tests
         run: |
           docker-compose exec -T app bash -c "php artisan migrate --force && php artisan test"
 
@@ -85,11 +86,10 @@ jobs:
           
       - name: Deploy to Production (if applicable)
         run: |
-          # Example: Deploy your app to production server
-          # ssh deploy@your-server "docker-compose pull && docker-compose up -d"
+          # Example: Deploy your app to a production server
+          # Replace with actual deploy commands
           echo "Deploying to production..."
 
-  # Optionally: Notifications (e.g. Slack, Email) after deployment or failure
   notify:
     runs-on: ubuntu-latest
     needs: deploy
@@ -97,4 +97,4 @@ jobs:
     steps:
       - name: Send Failure Notification
         run: |
-          echo "Sending failure notification..." # Use a real notification service like Slack API here
+          echo "Sending failure notification..." # Replace with real notification (e.g., Slack, email)
