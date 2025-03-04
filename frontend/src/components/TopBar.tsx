@@ -1,10 +1,12 @@
-'use client';
+"use client";
 
 import React, { useState, useEffect } from "react";
-import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Link from 'next/link';
 import { FaMagnifyingGlass } from "react-icons/fa6";
-import { FaBars } from "react-icons/fa6";
+
+import { FaCloudSunRain } from "react-icons/fa6";
+
 
 const TopBar: React.FC = () => {
   const [currentDate, setCurrentDate] = useState<string>("");
@@ -21,20 +23,25 @@ const TopBar: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-white text-black py-2">
+    <div className="bg-white text-black py-2  dark:bg-background dark:text-white">
       <div className="flex justify-between items-center max-w-screen-xl mx-auto px-4">
         <div className="flex gap-8">
-          <FaBars />
-          <FaMagnifyingGlass />
+      
+          
+          <Link href="/" className="text-xs text-grey flex items-center gap-1">
+            <FaCloudSunRain />
+            Partly Cloudy and Rain
+          </Link>
+
         </div>
         <div className="flex-grow text-center">
           <Link href="/" className="text-xs text-grey">{currentDate}</Link>
         </div>
         <div className="flex items-center gap-4">
+          <FaMagnifyingGlass />
           <div className="text-sm">
             <SignedOut>
-              <SignInButton>Sign In </SignInButton>&nbsp;&nbsp;
-              <SignUpButton>Sign Up </SignUpButton>
+              <SignInButton>Log In </SignInButton>
             </SignedOut>
             <SignedIn>
               <UserButton />

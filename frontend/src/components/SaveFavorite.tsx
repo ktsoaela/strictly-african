@@ -1,12 +1,18 @@
-import React from 'react';
+interface Article {
+  title: string;
+  description: string;
+  url: string;
+  content: string;
+  urlToImage?: string;
+}
 
-const saveToFavorites = (article: any) => {
-  let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+const saveToFavorites = (article: Article) => {
+  const favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
   favorites.push(article);
   localStorage.setItem('favorites', JSON.stringify(favorites));
 };
 
-const loadFavorites = (): any[] => {
+const loadFavorites = (): Article[] => {
   return JSON.parse(localStorage.getItem('favorites') || '[]');
 };
 

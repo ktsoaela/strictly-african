@@ -1,37 +1,37 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import { fetchNews } from './news-api';
-import NewsList from '../../components/NewsList';
+import React, { useEffect, useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+import { fetchTopHeadlines } from "./news-api";
+import NewsList from "../../components/NewsList";
+import CategoriesNav from "../../components/CategoriesNav";
 
 interface Article {
   title: string;
   description: string;
   url: string;
-  imageUrl: string; // Add the image URL field
+  urlToImage: string;
 }
 
-const NewsPage: React.FC = () => {
+const NewsPageContent: React.FC = () => {
+  const searchParams = useSearchParams();
+  const category = searchParams.get("category") || "";
+
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [category, setCategory] = useState<string>('');
-
-  const categories = ['General', 'Business', 'Technology', 'Sports', 'Health'];
-
-  const handleCategoryChange = (category: string) => {
-    setCategory(category);
-  };
 
   useEffect(() => {
     const fetchNewsArticles = async () => {
       setLoading(true);
       setError(null);
       try {
-        const newsArticles = await fetchNews(category);
+        const newsArticles = await fetchTopHeadlines(category, "us");
+        console.log("Fetched Articles:", newsArticles); // Debugging
         setArticles(newsArticles);
       } catch (error) {
-        setError('Failed to fetch news');
+        console.error("Error fetching news:", error); // Debugging
+        setError("Failed to fetch news");
       } finally {
         setLoading(false);
       }
@@ -42,40 +42,14 @@ const NewsPage: React.FC = () => {
 
   return (
     <div className="px-4 py-8">
-
-      <div className="font-extrabold text-gray-900 text-center" style={{ fontSize: '100px' }}>
+      <div className="font-extrabold text-gray-900 text-center" style={{ fontSize: "100px" }}>
         News
       </div>
 
-
-
-      <hr className="border-t-2 border-gray-300 my-4" />
-      {/* Categories */}
-      <div className="flex gap-4 mb-6 justify-center mx-auto">
-        <a
-          href="#"
-          onClick={() => handleCategoryChange('')}
-          className={`px-4 py-2 text-black font-bold ${category === '' ? 'bg-white' : 'bg-transparent'}`}
-        >
-          All Categories
-        </a>
-        {categories.map((cat) => (
-          <a
-            key={cat}
-            href="#"
-            onClick={() => handleCategoryChange(cat)}
-            className={`px-4 py-2 text-black font-bold ${category === cat ? 'bg-white' : 'bg-transparent'}`}
-          >
-            {cat}
-          </a>
-        ))}
-      </div>
-      <hr className="border-t-2 border-gray-300 my-4" />
-
-
+      <CategoriesNav />
 
       <div className="grid grid-cols-12 gap-4">
-        {/* Left Column: Article Image and Content */}
+        {/* Left Column: Featured Article */}
         <div className="col-span-6 bg-white border relative">
           {loading ? (
             <p>Loading...</p>
@@ -85,16 +59,11 @@ const NewsPage: React.FC = () => {
             articles[0] && (
               <div
                 className="w-full h-full bg-cover bg-center"
-                style={{ backgroundImage: `url(${articles[0].urlToImage})` }}
+                style={{ backgroundImage: `url(${articles[0].urlToImage || "/placeholder.jpg"})` }}
               >
                 <div className="p-4 bg-gradient-to-t from-black to-transparent rounded-lg h-full flex flex-col justify-end">
-                  {/* Article Title */}
                   <h2 className="text-2xl font-bold text-white mb-2">{articles[0].title}</h2>
-        
-                  {/* Article Description */}
                   <p className="text-sm text-white mb-4">{articles[0].description}</p>
-        
-                  {/* Link to Full Article */}
                   <a
                     href={articles[0].url}
                     target="_blank"
@@ -109,7 +78,7 @@ const NewsPage: React.FC = () => {
           )}
         </div>
 
-        {/* Middle Column: List of Top Stories */}
+        {/* Middle Column: Top Stories */}
         <div className="col-span-3 bg-white border p-4">
           <h3 className="font-bold mb-4">Top Stories</h3>
           {loading ? (
@@ -134,8 +103,7 @@ const NewsPage: React.FC = () => {
           )}
         </div>
 
-
-        {/* Right Column: Top Story in a Box */}
+        {/* Right Column: Featured Story */}
         <div className="col-span-3 bg-grey-100 border p-4">
           {loading ? (
             <p>Loading...</p>
@@ -147,7 +115,12 @@ const NewsPage: React.FC = () => {
                 <h3 className="font-bold text-black-700">Top Story</h3>
                 <h4 className="text-lg font-bold mt-2">{articles[0].title}</h4>
                 <p className="text-sm mt-2">{articles[0].description}</p>
-                <a href={articles[0].url} target="_blank" rel="noopener noreferrer" className="text-black-600 hover:underline mt-4 block">
+                <a
+                  href={articles[0].url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-black-600 hover:underline mt-4 block"
+                >
                   Read more
                 </a>
               </div>
@@ -155,7 +128,19 @@ const NewsPage: React.FC = () => {
           )}
         </div>
       </div>
+
+      {loading && <p>Loading...</p>}
+      {error && <p className="text-red-500">{error}</p>}
+      {!loading && !error && <NewsList articles={articles} />}
     </div>
+  );
+};
+
+const NewsPage: React.FC = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <NewsPageContent />
+    </Suspense>
   );
 };
 
