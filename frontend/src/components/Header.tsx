@@ -1,6 +1,7 @@
 import React from "react";
 import Link from 'next/link';
 import TopBar from './TopBar';
+import ThemeToggle from './ThemeToggle';
 
 const Header: React.FC = () => {
   return (
@@ -18,6 +19,7 @@ const Header: React.FC = () => {
             <Link href="/shop" className="hover:text-grey-400">Shop</Link>
           </nav>
           <div className="flex items-center gap-4">
+          <ThemeToggle />
           </div>
         </div>
       </header>
