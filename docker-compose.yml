@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   nextjs:
     build:
@@ -12,6 +14,8 @@ services:
       - .env
     depends_on:
       - laravel
+    networks:
+      - strictly-african-network
 
   laravel:
     build:
@@ -21,19 +25,26 @@ services:
       - "8000:80"
     volumes:
       - ./backend:/var/www/html
-      - ./.env:/var/www/html/.env 
     env_file:
       - .env
     environment:
-      - DB_HOST=${DB_HOST}
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - DB_CONNECTION=pgsql
+      - DB_HOST=db
+      - DB_PORT=5432
       - DB_DATABASE=${DB_DATABASE}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    networks:
+      - strictly-african-network
 
   db:
     image: postgres:13
+    restart: unless-stopped
     volumes:
       - db_data:/var/lib/postgresql/data
     env_file:
@@ -48,7 +59,12 @@ services:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}"]
       interval: 10s
       retries: 5
-
+    networks:
+      - strictly-african-network
 
 volumes:
   db_data:
+
+networks:
+  strictly-african-network:
+    driver: bridge

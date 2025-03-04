@@ -20,7 +20,7 @@ export default function Home() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get('http://laravel:8000/api/posts');
+        const response = await axios.get('http://localhost:8000/api/posts');
         const data = response.data;
 
         // Check if there are posts or an error message
@@ -32,11 +32,11 @@ export default function Home() {
       } catch (err) {
         // Handle error properly by checking its type
         if (err instanceof Error) {
-          setError(err.message); // Get the error message if it's an instance of Error
+          setError(err.message); 
         } else if (typeof err === 'string') {
-          setError(err); // If it's a string, just set it
+          setError(err); 
         } else {
-          setError('An unknown error occurred'); // Handle any other case
+          setError('An unknown error occurred');
         }
       } finally {
         setLoading(false);

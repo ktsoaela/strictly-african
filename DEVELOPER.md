@@ -4,6 +4,62 @@ https://supabase.com/docs
 
 https://supabase.com/
 
+go to connetcing string and use
+Only recommended as an alternative to Direct Connection, when connecting via an IPv4 network.
+psql -h aws-aaa-aaaa-aaa-.pooler.supabase.com -p 5432 -d postgres -U postgres.aaaaaaaaaaaaaaaaaa
+
+
+and create your own user in the db like this
+
+The error you're encountering:
+
+```
+FATAL: Tenant or user not found
+```
+
+indicates that the PostgreSQL user you're trying to connect with (`postgres.yoursupabas-session-pooler-user`) does not exist in the database.
+
+Since you're using Supabase's session pooler, you'll need to ensure that the user (`postgres.yoursupabas-session-pooler-user`) is created in Supabase, as this error usually occurs when the database cannot find the specified user.
+
+### Steps to Create the User in PostgreSQL (Supabase):
+
+1. **Connect to your Supabase PostgreSQL instance** using the connection string format that works (as you’ve already verified):
+   ```bash
+   psql postgresql://postgres.yoursupabas-session-pooler-user:[PASSWORD]@aws-0-eu-west-2.pooler.supabase.com:5432/postgres
+   ```
+
+   This will connect you to the database with the specified user and password.
+
+2. **Create the User in PostgreSQL**:
+   Once you're connected to the database, run the following SQL commands to create the user and grant the necessary permissions.
+
+   ```sql
+   -- Create the user
+   CREATE USER "postgres.yoursupabas-session-pooler-user" WITH PASSWORD '[PASSWORD]';
+
+   -- Grant the user access to the 'postgres' database (or any other database you're using)
+   GRANT ALL PRIVILEGES ON DATABASE postgres TO "postgres.yoursupabas-session-pooler-user";
+
+   -- Optional: Grant the user permissions for all tables in the schema
+   -- Make sure you're connected to the correct schema (usually 'public' in Supabase)
+   GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO "postgres.yoursupabas-session-pooler-user";
+   
+   -- Grant the user permission for future tables in the schema
+   ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO "postgres.yoursupabas-session-pooler-user";
+   ```
+
+3. **Verify the User Creation**:
+   You can check if the user was created and has the appropriate permissions by running:
+   
+   ```sql
+   \du  -- This will list all users and their roles.
+   ```
+
+4. **Try Connecting Again**:
+   After creating the user and granting the necessary privileges, try connecting to the database again via Laravel. The error should no longer occur if everything is set up correctly.
+
+---
+
 
 https://dashboard.clerk.com/
 
@@ -162,3 +218,8 @@ docker system prune -a
 Make sure you understand that these commands will **permanently delete unused data**, so use them with caution.
 
 Let me know if you need any further clarification!
+
+
+
+
+Get 
