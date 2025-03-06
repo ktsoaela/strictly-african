@@ -192,17 +192,72 @@ class NewsController extends Controller
         ], 201);
     }
 
-    /**
-     * Get all saved offline articles.
-     */
-    public function getOfflineArticles()
+
+
+
+
+    public function updateSettings(Request $request)
     {
-        $articles = OfflineArticle::all();
+        $request->validate([
+            'category' => 'nullable|string|in:business,entertainment,general,health,science,sports,technology',
+            'language' => 'nullable|string|in:ar,de,en,es,fr,he,it,nl,no,pt,ru,sv,ud,zh',
+            'country' => 'nullable|string|in:ae,ar,at,au,be,bg,br,ca,ch,cn,co,cu,cz,de,eg,fr,gb,gr,hk,hu,id,ie,il,in,it,jp,kr,lt,lv,ma,mx,my,ng,nl,nz,ph,pl,pt,ro,rs,ru,sa,se,sg,si,sk,th,tr,tw,ua,us,ve,za',
+        ]);
+
+        $settings = [
+            'category' => $request->input('category', 'general'),
+            'language' => $request->input('language', 'en'),
+            'country' => $request->input('country', 'za'),
+        ];
+
+        // Save settings to session or database as per your requirement
+        session(['news_settings' => $settings]);
+
         return response()->json([
             'status' => 'success',
-            'articles' => $articles
+            'settings' => $settings
         ]);
     }
 
+    public function removeOfflineArticle(Request $request, $id)
+    {
+        $article = OfflineArticle::find($id);
+    
+        if (!$article) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Article not found.'
+            ], 404);
+        }
+    
+        $article->delete();
+    
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Article removed successfully.'
+        ]);
+    }
 
+    public function getOfflineArticles(Request $request)
+    {
+        $pageSize = $request->query('pageSize', 10);
+        $search = $request->query('search', '');
+
+        $query = OfflineArticle::query();
+
+        if ($search) {
+            $query->where('title', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%");
+        }
+
+        $articles = $query->paginate($pageSize);
+
+        return response()->json([
+            'status' => 'success',
+            'articles' => $articles->items(),
+            'total' => $articles->total(),
+            'current_page' => $articles->currentPage(),
+            'last_page' => $articles->lastPage(),
+        ]);
+    }
 }
