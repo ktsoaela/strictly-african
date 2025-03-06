@@ -2,7 +2,7 @@ import React from "react";
 import Link from 'next/link';
 import TopBar from './TopBar';
 import ThemeToggle from './ThemeToggle';
-import { FaBars } from "react-icons/fa6";
+import { FaBars, FaHeart  } from "react-icons/fa6";
 
 
 const Header: React.FC = () => {
@@ -17,9 +17,13 @@ const Header: React.FC = () => {
           <nav className="flex gap-8">
             <Link href="/" className="hover:text-grey-400 font-bold">STRICTLY AFRICAN</Link>
            
+
           </nav>
           <div className="flex items-center gap-4">
           <ThemeToggle />
+          <Link href="/news/saved-articles">
+                <FaHeart className="text-xl" />
+            </Link>
           </div>
         </div>
       </header>

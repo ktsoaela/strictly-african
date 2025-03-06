@@ -6,6 +6,7 @@ import { fetchTopHeadlines } from "./news-api";
 import NewsList from "../../components/NewsList";
 import CategoriesNav from "../../components/CategoriesNav";
 
+
 interface Article {
   title: string;
   description: string;
@@ -61,7 +62,7 @@ const NewsPageContent: React.FC = () => {
                 className="w-full h-full bg-cover bg-center"
                 style={{ backgroundImage: `url(${articles[0].urlToImage || "/placeholder.jpg"})` }}
               >
-                <div className="p-4 bg-gradient-to-t from-black to-transparent rounded-lg h-full flex flex-col justify-end">
+                <div className="p-4 bg-gradient-to-t from-black to-transparent rounded-lg h-full flex flex-col justify-end border">
                   <h2 className="text-2xl font-bold text-white mb-2">{articles[0].title}</h2>
                   <p className="text-sm text-white mb-4">{articles[0].description}</p>
                   <a
@@ -80,7 +81,8 @@ const NewsPageContent: React.FC = () => {
 
         {/* Middle Column: Top Stories */}
         <div className="col-span-3 bg-white border p-4">
-          <h3 className="font-bold mb-4">Top Stories</h3>
+        <h3 className="font-bold mb-4 border-solid">Top Stories</h3>
+        {/* <h3 className="font-bold mb-4 border-solid p-2 uppercase" style={{ borderWidth: '8px' }}>Top Stories</h3> */}
           {loading ? (
             <p>Loading...</p>
           ) : error ? (

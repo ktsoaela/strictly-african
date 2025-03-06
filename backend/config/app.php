@@ -123,4 +123,15 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+
+  /*
+    |--------------------------------------------------------------------------
+    | Custom Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Coz i can and sometimes i need to
+    |
+    */
+    'news_api_key' => env('NEWS_API_KEY'),
+
 ];

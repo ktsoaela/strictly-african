@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+
 
 class NewsController extends Controller
 {
@@ -11,8 +13,14 @@ class NewsController extends Controller
 
     public function __construct()
     {
-        $this->newsApiKey = env('NEWS_API_KEY');
-    }
+        $this->newsApiKey = config('app.news_api_key');
+        Log::info('News API Key:', ['key' => $this->newsApiKey]);
+
+        if (is_null($this->newsApiKey)) {
+            Log::error('News API Key is null. Check .env file and configuration caching.');
+        }
+    }    
+
 
     /**
      * Fetch top headlines based on category, country, or sources.
@@ -132,9 +140,9 @@ class NewsController extends Controller
             'q' => $articleId, // Use article ID, URL, or title as the query
             'pageSize' => 1, // Fetch only one article
         ];
-    
+
         $response = Http::get('https://newsapi.org/v2/everything', array_filter($query));
-    
+
         if ($response->successful()) {
             $article = $response->json();
             return response()->json([
