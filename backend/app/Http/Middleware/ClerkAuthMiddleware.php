@@ -7,6 +7,7 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ClerkAuthMiddleware
 {
@@ -21,8 +22,12 @@ class ClerkAuthMiddleware
         $token = substr($authorizationHeader, 7);
 
         try {
+            // Log the Clerk public key for debugging
+            $clerkPublicKey = config('app.clerk_pem_public_key');
+            Log::info('Clerk Public Key:', ['key' => $clerkPublicKey]);
+
             // Decode JWT using Clerk public key
-            $decoded = JWT::decode($token, new Key(config('clerk_pem_public_key'), 'RS256'));
+            $decoded = JWT::decode($token, new Key($clerkPublicKey, 'RS256'));
 
             // Log the decoded token for debugging
             \Log::info('Decoded JWT:', (array) $decoded);

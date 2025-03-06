@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Link from 'next/link';
 import { FaMagnifyingGlass } from "react-icons/fa6";
-
+import OfflineNotifier from '@/components/OfflineNotifier';
 import { FaCloudSunRain } from "react-icons/fa6";
 
 
@@ -47,6 +47,7 @@ const TopBar: React.FC = () => {
               <UserButton />
             </SignedIn>
           </div>
+          <OfflineNotifier />
         </div>
       </div>
     </div>

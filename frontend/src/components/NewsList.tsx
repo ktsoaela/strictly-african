@@ -2,9 +2,11 @@ import React from 'react';
 import NewsArticle from './NewsArticle';
 
 interface Article {
+  id: number;
   title: string;
   description: string;
   url: string;
+  urlToImage?: string;
 }
 
 interface NewsListProps {
@@ -14,8 +16,8 @@ interface NewsListProps {
 const NewsList: React.FC<NewsListProps> = ({ articles }) => {
   return (
     <div>
-      {articles.map((article, index) => (
-        <NewsArticle key={index} article={article} />
+      {articles.map((article) => (
+        <NewsArticle key={article.id} article={article} />
       ))}
     </div>
   );

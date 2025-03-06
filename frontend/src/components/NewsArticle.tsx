@@ -1,18 +1,21 @@
 import React from 'react';
 import SaveArticleButton from './SaveArticleButton';
 
+interface Article {
+  id: number;
+  title: string;
+  description: string;
+  url: string;
+  urlToImage?: string;
+}
+
 interface NewsArticleProps {
-  article: {
-    title: string;
-    description: string;
-    url: string;
-    urlToImage?: string;
-  };
+  article: Article;
 }
 
 const NewsArticle: React.FC<NewsArticleProps> = ({ article }) => {
   return (
-    <div className="my-4 p-4 pt-0 border border-grey-300 dark:bg-background dark:text-white">
+    <div className="my-4 p-4 border border-grey-300 dark:bg-background dark:text-white">
       <div className="flex justify-between items-center">
         <h3 className="text-xl font-bold">{article.title}</h3>
         <SaveArticleButton article={article} />

@@ -2,9 +2,10 @@
 import axios from "axios";
 import React from 'react';
 import { useAuth } from '@clerk/nextjs';
-import { FaStar  } from "react-icons/fa6";
+import { FaStar } from "react-icons/fa";
 
 interface Article {
+  id: number;
   title: string;
   description: string;
   url: string;
@@ -26,7 +27,7 @@ const SaveArticleButton: React.FC<SaveArticleButtonProps> = ({ article }) => {
 
     try {
       const token = await getToken();
-      await axios.post("http://localhost:8000/api/news/saved-articles", {
+      await axios.post("http://localhost:8000/api/news/save-for-offline", {
         title: article.title,
         description: article.description,
         url: article.url,
@@ -45,7 +46,7 @@ const SaveArticleButton: React.FC<SaveArticleButtonProps> = ({ article }) => {
   return (
     <button
       onClick={handleSave}
-      className="font-bold mt-4 py-2 uppercase inline-block"
+      className="font-bold ml-4 p-2 uppercase inline-block"
     >
       <FaStar className="text-3xl" />
     </button>

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Models\OfflineArticle;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -14,12 +17,13 @@ class NewsController extends Controller
     public function __construct()
     {
         $this->newsApiKey = config('app.news_api_key');
-        Log::info('News API Key:', ['key' => $this->newsApiKey]);
+        // Log::info('News API Key:', ['key' => $this->newsApiKey]);
 
-        if (is_null($this->newsApiKey)) {
-            Log::error('News API Key is null. Check .env file and configuration caching.');
-        }
-    }    
+        $clerkPublicKey = config('app.clerk_pem_public_key');
+        // Log::info('Clerk Public Key:', ['key' => $clerkPublicKey]);
+
+  
+    }
 
 
     /**
@@ -156,4 +160,46 @@ class NewsController extends Controller
             ], $response->status());
         }
     }
+
+    /**
+     * Save an article for offline reading.
+     */
+    public function saveForOffline(Request $request)
+    {   
+
+        Log::info('Request Data:', $request->all());
+
+        $request->validate([
+            'title' => 'required|string',
+            'description' => 'nullable|string',
+            'url' => 'required|url|unique:offline_articles,url',
+            'url_to_image' => 'nullable|url',
+        ]);
+
+        $article = OfflineArticle::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'url' => $request->url,
+            'url_to_image' => $request->url_to_image,
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'article' => $article
+        ], 201);
+    }
+
+    /**
+     * Get all saved offline articles.
+     */
+    public function getOfflineArticles()
+    {
+        $articles = OfflineArticle::all();
+        return response()->json([
+            'status' => 'success',
+            'articles' => $articles
+        ]);
+    }
+
+
 }

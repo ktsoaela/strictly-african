@@ -8,6 +8,8 @@
     Route::get('/news/everything', [NewsController::class, 'getEverything']);
     Route::get('/news/sources', [NewsController::class, 'getSources']);
     Route::get('/news/article/{articleId}', [NewsController::class, 'getArticle']);
+    Route::post('/news/save-for-offline', [NewsController::class, 'saveForOffline']);
+    Route::get('/news/offline-articles', [NewsController::class, 'getOfflineArticles']);
 
     Route::middleware([ClerkAuthMiddleware::class])->group(function () {
         Route::get('/news/saved-articles', [SavedArticleController::class, 'index']);
