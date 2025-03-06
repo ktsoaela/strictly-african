@@ -8,6 +8,7 @@ use App\Models\OfflineArticle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 
 
 class NewsController extends Controller
@@ -22,7 +23,7 @@ class NewsController extends Controller
         $clerkPublicKey = config('app.clerk_pem_public_key');
         // Log::info('Clerk Public Key:', ['key' => $clerkPublicKey]);
 
-  
+
     }
 
 
@@ -43,30 +44,32 @@ class NewsController extends Controller
             ], 400);
         }
 
-        // Build query parameters
-        $query = [
-            'apiKey' => $this->newsApiKey,
-            'country' => $sources ? null : $country, // Sources and country can't be mixed
-            'category' => $sources ? null : $category, // Sources and category can't be mixed
-            'sources' => $sources,
-            'pageSize' => 20,
-        ];
+        $cacheKey = "top-headlines-{$country}-{$category}-{$sources}";
+        $news = Cache::remember($cacheKey, 300, function () use ($country, $category, $sources) {
+            // Build query parameters
+            $query = [
+                'apiKey' => $this->newsApiKey,
+                'country' => $sources ? null : $country,
+                'category' => $sources ? null : $category,
+                'sources' => $sources,
+                'pageSize' => 20,
+            ];
 
-        // Make API request
-        $response = Http::get('https://newsapi.org/v2/top-headlines', array_filter($query));
+            // Make API request
+            $response = Http::get('https://newsapi.org/v2/top-headlines', array_filter($query));
 
-        if ($response->successful()) {
-            $news = $response->json();
-            return response()->json([
-                'status' => 'success',
-                'articles' => $news['articles'] ?? []
-            ]);
-        } else {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Failed to fetch top headlines from News API.'
-            ], $response->status());
-        }
+            if ($response->successful()) {
+                $news = $response->json();
+                return $news['articles'] ?? [];
+            }
+
+            return [];
+        });
+
+        return response()->json([
+            'status' => 'success',
+            'articles' => $news
+        ]);
     }
 
     /**
@@ -165,7 +168,7 @@ class NewsController extends Controller
      * Save an article for offline reading.
      */
     public function saveForOffline(Request $request)
-    {   
+    {
 
         Log::info('Request Data:', $request->all());
 

@@ -8,6 +8,7 @@ import CategoriesNav from "../../components/CategoriesNav";
 
 
 interface Article {
+  id: number;
   title: string;
   description: string;
   url: string;
@@ -29,7 +30,7 @@ const NewsPageContent: React.FC = () => {
       try {
         const newsArticles = await fetchTopHeadlines(category, "us");
         // console.log("Fetched Articles:", newsArticles); // Debugging
-        setArticles(newsArticles);
+        setArticles(Array.isArray(newsArticles) ? newsArticles : []);
       } catch (error) {
         // console.error("Error fetching news:", error); // Debugging
         setError("Failed to fetch news");

@@ -14,10 +14,15 @@ interface NewsListProps {
 }
 
 const NewsList: React.FC<NewsListProps> = ({ articles }) => {
+  if (!Array.isArray(articles)) {
+    console.error("Expected an array, but got:", articles);
+    return <p>No articles available</p>;
+  }
+
   return (
     <div>
       {articles.map((article) => (
-        <NewsArticle key={article.id} article={article} />
+        <NewsArticle key={article.url} article={article} />
       ))}
     </div>
   );
