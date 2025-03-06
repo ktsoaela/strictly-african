@@ -2,7 +2,7 @@ import React from "react";
 import Link from 'next/link';
 import TopBar from './TopBar';
 import ThemeToggle from './ThemeToggle';
-import { FaBars, FaHeart  } from "react-icons/fa6";
+import { FaBars, FaStar  } from "react-icons/fa6";
 
 
 const Header: React.FC = () => {
@@ -22,7 +22,7 @@ const Header: React.FC = () => {
           <div className="flex items-center gap-4">
           <ThemeToggle />
           <Link href="/news/saved-articles">
-                <FaHeart className="text-xl" />
+                <FaStar className="text-xl" />
             </Link>
           </div>
         </div>

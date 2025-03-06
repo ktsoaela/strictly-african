@@ -1,6 +1,8 @@
 "use client";
 import axios from "axios";
 import React from 'react';
+import { useAuth } from '@clerk/nextjs';
+import { FaStar  } from "react-icons/fa6";
 
 interface Article {
   title: string;
@@ -14,8 +16,16 @@ interface SaveArticleButtonProps {
 }
 
 const SaveArticleButton: React.FC<SaveArticleButtonProps> = ({ article }) => {
+  const { isSignedIn, getToken } = useAuth();
+
   const handleSave = async () => {
+    if (!isSignedIn) {
+      alert("You need to be logged in to save articles.");
+      return;
+    }
+
     try {
+      const token = await getToken();
       await axios.post("http://localhost:8000/api/news/saved-articles", {
         title: article.title,
         description: article.description,
@@ -23,7 +33,7 @@ const SaveArticleButton: React.FC<SaveArticleButtonProps> = ({ article }) => {
         url_to_image: article.urlToImage,
       }, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${token}`,
         },
       });
       alert("Article saved for offline reading!");
@@ -35,9 +45,9 @@ const SaveArticleButton: React.FC<SaveArticleButtonProps> = ({ article }) => {
   return (
     <button
       onClick={handleSave}
-      className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+      className="font-bold mt-4 py-2 uppercase inline-block"
     >
-      Save for Offline
+      <FaStar className="text-3xl" />
     </button>
   );
 };

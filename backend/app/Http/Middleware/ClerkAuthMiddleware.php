@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Middleware;
 
 use Closure;
@@ -23,7 +22,7 @@ class ClerkAuthMiddleware
 
         try {
             // Decode JWT using Clerk public key
-            $decoded = JWT::decode($token, new Key(env('CLERK_PEM_PUBLIC_KEY'), 'RS256'));
+            $decoded = JWT::decode($token, new Key(config('clerk_pem_public_key'), 'RS256'));
 
             // Log the decoded token for debugging
             \Log::info('Decoded JWT:', (array) $decoded);

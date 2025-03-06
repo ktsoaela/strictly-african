@@ -133,5 +133,6 @@ return [
     |
     */
     'news_api_key' => env('NEWS_API_KEY'),
+    'clerk_pem_public_key' => env('CLERK_PEM_PUBLIC_KEY'),
 
 ];
