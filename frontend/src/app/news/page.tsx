@@ -43,7 +43,7 @@ const NewsPageContent: React.FC = () => {
 
   return (
     <div className="px-4 py-8">
-      <div className="font-extrabold text-gray-900 text-center" style={{ fontSize: "100px" }}>
+      <div className="font-extrabold bg-white border p-4 bg-background text-black dark:bg-background dark:text-white text-center" style={{ fontSize: "100px" }}>
         News
       </div>
 
@@ -80,7 +80,7 @@ const NewsPageContent: React.FC = () => {
         </div>
 
         {/* Middle Column: Top Stories */}
-        <div className="col-span-3 bg-white border p-4">
+        <div className="col-span-3 bg-white border p-4 bg-background text-black dark:bg-background dark:text-white">
         <h3 className="font-bold mb-4 border-solid">Top Stories</h3>
         {/* <h3 className="font-bold mb-4 border-solid p-2 uppercase" style={{ borderWidth: '8px' }}>Top Stories</h3> */}
           {loading ? (
@@ -95,7 +95,7 @@ const NewsPageContent: React.FC = () => {
                     href={article.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-black hover:text-blue-600 hover:underline"
+                    className="bg-white  bg-background text-black dark:bg-background dark:text-white"
                   >
                     {article.title}
                   </a>
@@ -106,7 +106,7 @@ const NewsPageContent: React.FC = () => {
         </div>
 
         {/* Right Column: Featured Story */}
-        <div className="col-span-3 bg-grey-100 border p-4">
+        <div className="col-span-3 bg- border p-4 bg-background text-black dark:bg-background dark:text-white">
           {loading ? (
             <p>Loading...</p>
           ) : error ? (
