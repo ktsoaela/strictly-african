@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
-import SavedArticles from "@/components/SavedArticles";
 
 interface Article {
   title: string;
@@ -77,7 +76,6 @@ const ArticlePage: React.FC = () => {
           </div>
         </>
       )}
-      <SavedArticles />
     </div>
   );
 };

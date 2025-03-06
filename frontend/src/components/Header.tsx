@@ -9,7 +9,7 @@ const Header: React.FC = () => {
   return (
     <>
       <TopBar />
-      <header className="bg-gray-900 text-white p-4 dark:bg-gray-800">
+      <header className="bg-gray-900 text-white p-4 dark:bg-gray-900">
         <div className="flex justify-between items-center max-w-screen-xl mx-auto">
           <div className="text-xl font-bold">
                 <FaBars />

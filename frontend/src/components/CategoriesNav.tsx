@@ -20,22 +20,26 @@ const CategoriesNav = () => {
   };
 
   return (
-    <div className="flex gap-4 mb-6 justify-center">
-      <button
-        onClick={() => router.push("/news")}
-        className="px-4 py-2 font-bold text-black dark:bg-background dark:text-white"
-      >
-        All Categories
-      </button>
-      {categories.map((cat) => (
+    <div className="flex flex-col items-center mb-6">
+      <hr className="w-full border-t-2 border-gray-300 dark:border-gray-600 mb-4" />
+      <div className="flex gap-4 justify-center">
         <button
-          key={cat}
-          onClick={() => handleCategoryChange(cat)}
+          onClick={() => router.push("/news")}
           className="px-4 py-2 font-bold text-black dark:bg-background dark:text-white"
         >
-          {cat}
+          All Categories
         </button>
-      ))}
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            onClick={() => handleCategoryChange(cat)}
+            className="px-4 py-2 font-bold text-black dark:bg-background dark:text-white"
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+      <hr className="w-full border-t-2 border-gray-300 dark:border-gray-600 mt-4" />
     </div>
   );
 };

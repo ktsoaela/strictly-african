@@ -28,10 +28,10 @@ const NewsPageContent: React.FC = () => {
       setError(null);
       try {
         const newsArticles = await fetchTopHeadlines(category, "us");
-        console.log("Fetched Articles:", newsArticles); // Debugging
+        // console.log("Fetched Articles:", newsArticles); // Debugging
         setArticles(newsArticles);
       } catch (error) {
-        console.error("Error fetching news:", error); // Debugging
+        // console.error("Error fetching news:", error); // Debugging
         setError("Failed to fetch news");
       } finally {
         setLoading(false);
@@ -43,7 +43,7 @@ const NewsPageContent: React.FC = () => {
 
   return (
     <div className="px-4 py-8">
-      <div className="font-extrabold bg-white border p-4 bg-background text-black dark:bg-background dark:text-white text-center" style={{ fontSize: "100px" }}>
+      <div className="font-extrabold bg-white p-4 bg-background text-black dark:bg-background dark:text-white text-center" style={{ fontSize: "100px" }}>
         News
       </div>
 
@@ -81,8 +81,7 @@ const NewsPageContent: React.FC = () => {
 
         {/* Middle Column: Top Stories */}
         <div className="col-span-3 bg-white border p-4 bg-background text-black dark:bg-background dark:text-white">
-        <h3 className="font-bold mb-4 border-solid">Top Stories</h3>
-        {/* <h3 className="font-bold mb-4 border-solid p-2 uppercase" style={{ borderWidth: '8px' }}>Top Stories</h3> */}
+        <h3 className="font-bold mb-4 p-2 uppercase inline-block bg-black text-white dark:bg-background dark:text-white" style={{ borderWidth: '2px' }}>Top Stories</h3> 
           {loading ? (
             <p>Loading...</p>
           ) : error ? (
@@ -114,14 +113,16 @@ const NewsPageContent: React.FC = () => {
           ) : (
             articles[0] && (
               <div>
-                <h3 className="font-bold text-black-700">Top Story</h3>
+                <h3 className="font-bold mb-4 p-2 uppercase inline-block bg-black text-white dark:bg-background dark:text-white" style={{ borderWidth: '2px' }}>Top Story</h3>
                 <h4 className="text-lg font-bold mt-2">{articles[0].title}</h4>
                 <p className="text-sm mt-2">{articles[0].description}</p>
+                <br />
                 <a
                   href={articles[0].url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-black-600 hover:underline mt-4 block"
+                  className="text-black dark:text-white font-bold hover:underline"
+
                 >
                   Read more
                 </a>
