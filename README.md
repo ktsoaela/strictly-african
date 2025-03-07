@@ -32,11 +32,16 @@ Ensure you have the following installed:
    ```bash
    cp .env.example .env
    ```
-3. Start the Docker containers:
+5. Start the Docker containers:
+   ```bash
+   docker network create strictly-african-network
+   docker-compose up
+   ```
+4. Start the Docker containers:
    ```bash
    docker compose up --build
    ```
-4. Access the app:
+5. Access the app:
    - Frontend: [http://localhost:3000](http://localhost:3000)
    - Backend API: [http://localhost:8000](http://localhost:8000)
 
