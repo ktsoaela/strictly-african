@@ -25,16 +25,9 @@ const SavedArticlesTable: React.FC<SavedArticlesTableProps> = ({
   articlesPerPage,
   totalArticles,
   onPageChange,
-  onSearch,
   onRemove,
 }) => {
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-    onSearch(e.target.value);
-  };
-
+  
   const totalPages = Math.ceil(totalArticles / articlesPerPage);
 
   return (

@@ -1,13 +1,12 @@
-Dependendencies
+# Developer Guide  
 
-https://supabase.com/docs
+## Dependencies  
 
-https://supabase.com/
+This project relies on the following technologies and services:  
 
-go to connetcing string and use
-Only recommended as an alternative to Direct Connection, when connecting via an IPv4 network.
-psql -h aws-aaa-aaaa-aaa-.pooler.supabase.com -p 5432 -d postgres -U postgres.aaaaaaaaaaaaaaaaaa
-
+- **Laravel** (Backend) - https://laravel.com/  
+- **Next.js** (Frontend) - https://nextjs.org/  
+- **Supabase** (Database & Auth) - https://supabase.com/  
 
 and create your own user in the db like this
 
@@ -217,7 +216,7 @@ docker system prune -a
 
 Make sure you understand that these commands will **permanently delete unused data**, so use them with caution.
 
-Let me know if you need any further clarification!
+
 
 
 

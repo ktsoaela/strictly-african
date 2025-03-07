@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, JSX } from "react";
 import axios from "axios";
 import SavedArticlesTable from "@/components/SavedArticlesTable";
 

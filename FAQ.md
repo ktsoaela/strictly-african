@@ -330,5 +330,3 @@ If the error persists, ensure that the file path in the error message (`/usr/src
 
 ### Conclusion
 To fix this error, ensure that the `tailwindcss-animate` package is installed, properly configured in the `tailwind.config.js`, and that the `globals.css` file correctly imports the plugin.
-
-Let me know if the issue persists or if you need further assistance!

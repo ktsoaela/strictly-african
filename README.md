@@ -43,12 +43,48 @@ Ensure you have the following installed:
 ## 📌 Directory Structure
 ```
 strictly-african/
-│── README.md
-│── docker-compose.yml
-│── backend/ (Laravel API)
-│   └── Dockerfile
-│── frontend/ (Next.js Frontend)
-│   └── Dockerfile
+.
+├── DEVELOPER.md                       // Developer-specific instructions and guidelines
+├── FAQ.md                             // Frequently asked questions about the project
+├── README.md                          // Main project documentation
+├── backend
+│   ├── Dockerfile                     // Docker configuration for the Laravel backend
+│   ├── README.md                      // Documentation specific to the backend
+│   ├── app                            // Core application logic (models, controllers, etc.)
+│   ├── artisan                        // Laravel CLI for running commands
+│   ├── bootstrap                      // Application bootstrapping files
+│   ├── composer.json                  // PHP dependencies and project metadata
+│   ├── composer.lock                  // Locked versions of PHP dependencies
+│   ├── config                         // Configuration files for the application
+│   ├── database                       // Database migrations, seeders, and factories
+│   ├── docker-000-default.conf        // Apache configuration for Docker
+│   ├── package-lock.json              // Locked versions of Node.js dependencies
+│   ├── package.json                   // Node.js dependencies and scripts
+│   ├── phpunit.xml                    // PHPUnit configuration for testing
+│   ├── postcss.config.js              // PostCSS configuration for Tailwind CSS
+│   ├── public                         // Publicly accessible files (e.g., assets, index.php)
+│   ├── resources                      // Non-PHP resources (e.g., views, CSS, JS)
+│   ├── routes                         // Application routes (API, web, console)
+│   ├── storage                        // Storage for logs, cached files, and uploads
+│   ├── tailwind.config.js             // Tailwind CSS configuration
+│   ├── tests                          // Feature and unit tests
+│   ├── vendor                         // Composer-installed PHP dependencies
+│   └── vite.config.js                 // Vite configuration for frontend assets
+├── docker-compose.yml                 // Multi-container Docker setup for the project
+└── frontend
+    ├── Dockerfile                     // Docker configuration for the Next.js frontend
+    ├── README.md                      // Documentation specific to the frontend
+    ├── eslint.config.mjs              // ESLint configuration for linting
+    ├── next-env.d.ts                  // TypeScript declaration file for Next.js
+    ├── next.config.ts                 // Next.js configuration (e.g., custom webpack settings)
+    ├── node_modules                   // Installed Node.js dependencies
+    ├── package-lock.json              // Locked versions of Node.js dependencies
+    ├── package.json                   // Node.js dependencies and scripts
+    ├── postcss.config.mjs             // PostCSS configuration for Tailwind CSS
+    ├── public                         // Static assets (e.g., images, icons)
+    ├── src                            // Application source code (components, pages, etc.)
+    ├── tailwind.config.ts             // Tailwind CSS configuration
+    └── tsconfig.json                  // TypeScript configuration
 ```
 
 ## 📚 FAQ

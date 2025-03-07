@@ -50,9 +50,9 @@ const NewsPageContent: React.FC = () => {
 
       <CategoriesNav />
 
-      <div className="grid grid-cols-12 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
         {/* Left Column: Featured Article */}
-        <div className="col-span-6 bg-white border relative">
+        <div className="md:col-span-6 bg-white border relative">
           {loading ? (
             <p>Loading...</p>
           ) : error ? (
@@ -81,8 +81,10 @@ const NewsPageContent: React.FC = () => {
         </div>
 
         {/* Middle Column: Top Stories */}
-        <div className="col-span-3 bg-white border p-4 bg-background text-black dark:bg-background dark:text-white">
-        <h3 className="font-bold mb-4 p-2 uppercase inline-block bg-black text-white dark:bg-background dark:text-white" style={{ borderWidth: '2px' }}>Top Stories</h3> 
+        <div className="md:col-span-3 bg-white border p-4 bg-background text-black dark:bg-background dark:text-white">
+          <h3 className="font-bold mb-4 p-2 uppercase inline-block bg-black text-white dark:bg-background dark:text-white" style={{ borderWidth: '2px' }}>
+            Top Stories
+          </h3>
           {loading ? (
             <p>Loading...</p>
           ) : error ? (
@@ -95,7 +97,7 @@ const NewsPageContent: React.FC = () => {
                     href={article.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-white  bg-background text-black dark:bg-background dark:text-white"
+                    className="bg-white bg-background text-black dark:bg-background dark:text-white"
                   >
                     {article.title}
                   </a>
@@ -106,7 +108,7 @@ const NewsPageContent: React.FC = () => {
         </div>
 
         {/* Right Column: Featured Story */}
-        <div className="col-span-3 bg- border p-4 bg-background text-black dark:bg-background dark:text-white">
+        <div className="md:col-span-3 bg-white border p-4 bg-background text-black dark:bg-background dark:text-white">
           {loading ? (
             <p>Loading...</p>
           ) : error ? (
@@ -114,7 +116,9 @@ const NewsPageContent: React.FC = () => {
           ) : (
             articles[0] && (
               <div>
-                <h3 className="font-bold mb-4 p-2 uppercase inline-block bg-black text-white dark:bg-background dark:text-white" style={{ borderWidth: '2px' }}>Top Story</h3>
+                <h3 className="font-bold mb-4 p-2 uppercase inline-block bg-black text-white dark:bg-background dark:text-white" style={{ borderWidth: '2px' }}>
+                  Top Story
+                </h3>
                 <h4 className="text-lg font-bold mt-2">{articles[0].title}</h4>
                 <p className="text-sm mt-2">{articles[0].description}</p>
                 <br />
@@ -123,7 +127,6 @@ const NewsPageContent: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-black dark:text-white font-bold hover:underline"
-
                 >
                   Read more
                 </a>
