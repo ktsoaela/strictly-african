@@ -192,7 +192,17 @@ class NewsController extends Controller
         ], 201);
     }
 
-
+    /**
+     * Get all saved offline articles.
+     */
+    // public function getOfflineArticles()
+    // {
+    //     $articles = OfflineArticle::all();
+    //     return response()->json([
+    //         'status' => 'success',
+    //         'articles' => $articles
+    //     ]);
+    // }
 
 
 
