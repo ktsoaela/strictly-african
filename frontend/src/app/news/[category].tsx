@@ -4,17 +4,11 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { fetchTopHeadlines, fetchEverything } from "./news-api";
 import NewsList from "../../components/NewsList";
-
-interface Article {
-  title: string;
-  description: string;
-  url: string;
-  urlToImage?: string;
-}
+import { Article } from "@/types/article"; 
 
 const CategoriesPage: React.FC = () => {
   const searchParams = useSearchParams();
-  const category = searchParams.get("category") || "general"; // Default to "general" if no category is found
+  const category = searchParams.get("category") || "general"; 
 
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -27,11 +21,14 @@ const CategoriesPage: React.FC = () => {
 
       try {
         // Fetch articles from both sources
-        const topHeadlines = await fetchTopHeadlines(category);
-        const everythingNews = await fetchEverything(category);
+        const topHeadlines: Article[] = await fetchTopHeadlines(category);
+        const everythingNews: Article[] = await fetchEverything(category);
 
-        // Combine and set articles
-        setArticles([...topHeadlines, ...everythingNews]);
+        const combinedArticles = [
+          ...topHeadlines.map((article: Article, index: number) => ({ ...article, id: index + 1 })), 
+          ...everythingNews.map((article: Article, index: number) => ({ ...article, id: index + topHeadlines.length + 1 })), 
+        ];
+        setArticles(combinedArticles);
       } catch {
         setError("Failed to fetch news");
       } finally {

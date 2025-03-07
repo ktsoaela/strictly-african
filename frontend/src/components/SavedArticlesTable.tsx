@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FaTrashAlt } from "react-icons/fa";
 
 interface Article {
@@ -27,12 +27,11 @@ const SavedArticlesTable: React.FC<SavedArticlesTableProps> = ({
   onPageChange,
   onRemove,
 }) => {
-  
   const totalPages = Math.ceil(totalArticles / articlesPerPage);
 
   return (
     <div className="overflow-x-auto">
-      <br/>
+      <br />
       <table className="min-w-full bg-white dark:bg-gray-800 dark:text-white">
         <thead>
           <tr className="bg-gray-100 dark:bg-gray-700">
@@ -56,7 +55,13 @@ const SavedArticlesTable: React.FC<SavedArticlesTableProps> = ({
               <td className="px-6 py-4">{article.title}</td>
               <td className="px-6 py-4">{article.description}</td>
               <td className="px-6 py-4">
-                <a href={article.url} target="_blank" rel="noopener noreferrer" className="text-blue-500 dark:text-blue-400 hover:underline">
+                <a
+                  href={article.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-bold mb-4 border-black dark:border-white p-2 uppercase inline-block"
+                  style={{ borderWidth: '2px' }}
+                >
                   Read more
                 </a>
               </td>

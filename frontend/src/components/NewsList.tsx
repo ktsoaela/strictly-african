@@ -1,13 +1,6 @@
-import React from 'react';
-import NewsArticle from './NewsArticle';
-
-interface Article {
-  id: number;
-  title: string;
-  description: string;
-  url: string;
-  urlToImage?: string;
-}
+import React from "react";
+import { Article } from "@/types/article"; 
+import NewsArticle from "./NewsArticle";
 
 interface NewsListProps {
   articles: Article[];
@@ -22,7 +15,7 @@ const NewsList: React.FC<NewsListProps> = ({ articles }) => {
   return (
     <div>
       {articles.map((article) => (
-        <NewsArticle key={article.url} article={article} />
+        <NewsArticle key={article.id} article={article} /> 
       ))}
     </div>
   );

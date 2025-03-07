@@ -28,6 +28,12 @@ const Settings: React.FC<SettingsProps> = ({ onClose }) => {
     }
   };
 
+  const handleCancel = () => {
+    setIsOpen(false);
+    onClose();
+  };
+
+
   return (
     <div>
       <button
@@ -133,7 +139,7 @@ const Settings: React.FC<SettingsProps> = ({ onClose }) => {
                 </select>
               </div>
               <div className="flex justify-end gap-2">
-                <button type="button" onClick={() => setIsOpen(false)} className="px-4 py-2 bg-gray-500 text-white rounded">Cancel</button>
+                <button type="button" onClick={handleCancel} className="px-4 py-2 bg-gray-500 text-white rounded">Cancel</button>
                 <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded">Save</button>
               </div>
             </form>

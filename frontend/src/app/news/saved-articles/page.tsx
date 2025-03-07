@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, JSX } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import SavedArticlesTable from "@/components/SavedArticlesTable";
 
@@ -23,10 +23,13 @@ const SavedArticlesPage: React.FC = () => {
   useEffect(() => {
     const fetchSavedArticles = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/news/offline-articles?page=${currentPage}&pageSize=${articlesPerPage}`);
+        const response = await axios.get(
+          `http://localhost:8000/api/news/offline-articles?page=${currentPage}&pageSize=${articlesPerPage}`
+        );
         setArticles(response.data.articles);
         setTotalArticles(response.data.total);
       } catch (err) {
+        console.error("Error fetching saved articles:", err);
         setError("Failed to load saved articles.");
       } finally {
         setLoading(false);
@@ -43,10 +46,13 @@ const SavedArticlesPage: React.FC = () => {
   const handleSearch = async (query: string) => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://localhost:8000/api/news/offline-articles?search=${query}&page=${currentPage}&pageSize=${articlesPerPage}`);
+      const response = await axios.get(
+        `http://localhost:8000/api/news/offline-articles?search=${query}&page=${currentPage}&pageSize=${articlesPerPage}`
+      );
       setArticles(response.data.articles);
       setTotalArticles(response.data.total);
     } catch (err) {
+      console.error("Error searching saved articles:", err); 
       setError("Failed to load saved articles.");
     } finally {
       setLoading(false);
@@ -56,8 +62,9 @@ const SavedArticlesPage: React.FC = () => {
   const handleRemove = async (id: number) => {
     try {
       await axios.delete(`http://localhost:8000/api/news/offline-articles/${id}`);
-      setArticles(articles.filter(article => article.id !== id));
+      setArticles(articles.filter((article) => article.id !== id));
     } catch (err) {
+      console.error("Error removing article:", err);
       setError("Failed to remove article.");
     }
   };

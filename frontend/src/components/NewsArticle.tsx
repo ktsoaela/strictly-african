@@ -1,13 +1,6 @@
 import React from 'react';
 import SaveArticleButton from './SaveArticleButton';
-
-interface Article {
-  id: number;
-  title: string;
-  description: string;
-  url: string;
-  urlToImage?: string;
-}
+import { Article } from '@/types/article'; // Import the shared type
 
 interface NewsArticleProps {
   article: Article;
