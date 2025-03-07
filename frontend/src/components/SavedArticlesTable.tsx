@@ -39,15 +39,7 @@ const SavedArticlesTable: React.FC<SavedArticlesTableProps> = ({
 
   return (
     <div className="overflow-x-auto">
-      <div className="mb-4">
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={handleSearch}
-          placeholder="Search articles..."
-          className="w-full px-4 py-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white dark:border-gray-600"
-        />
-      </div>
+      <br/>
       <table className="min-w-full bg-white dark:bg-gray-800 dark:text-white">
         <thead>
           <tr className="bg-gray-100 dark:bg-gray-700">

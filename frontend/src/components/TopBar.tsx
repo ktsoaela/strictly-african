@@ -5,7 +5,7 @@ import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Link from 'next/link';
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import OfflineNotifier from '@/components/OfflineNotifier';
-import { LuSettings2 } from "react-icons/lu";
+import Settings from "@/components/Settings";
 import { FaCloudSunRain } from "react-icons/fa6";
 
 
@@ -52,9 +52,7 @@ const TopBar: React.FC = () => {
               <UserButton />
             </SignedIn>
           </div>
-          <Link href="/news/settings" className="text-xs text-grey">
-            <LuSettings2 />
-          </Link>
+          <Settings onClose={() => console.log("Settings closed")} />
           <OfflineNotifier />
         </div>
       </div>
